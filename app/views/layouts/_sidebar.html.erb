@@ -1,10 +1,14 @@
 <div id="sidebar">
 			<h4>Urgent</h4>
 			<ul>
-				<li><a href="#" title="Urgent">Urgent</a></li>
+				<% @urgent.each do |task| %>
+					<li><%= link_to task.short, task %></li>
+				<% end %>
 			</ul>
 			<h4>Latest</h4>
 			<ul>
-				<li><a href="#" title="Latest">Latest</a></li>
+				<% @latest.each do |task| %>
+					<li><%= link_to task.short, task %></li>
+				<% end %>
 			</ul>
 		</div>

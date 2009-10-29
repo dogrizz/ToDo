@@ -1,27 +1,20 @@
 class TasksController < ApplicationController
 	before_filter :priorytety, :only => [:new, :edit, :show ]
-
+	before_filter :sidebar
   # GET /tasks/
   # GET /tasks.xml
 
   def index
 	@complete = params[:complete]
+
 	if @complete.nil?
 		@complete = false
+		@tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "priority DESC, created_at ASC" )
 	else
-		case @complete
-			when "true"
-				@complete = true
-			when "false"
-				@complete = false
-		end
+		@complete = true
+		@tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "updated_at DESC")
 	end
 
-	if !@complete
-		@tasks = Task.all(:conditions => ["complete = ?", @complete]).sort_by { |t| t['priority'] }
-	else
-		@tasks = Task.all(:conditions => ["complete = ?", @complete]).sort_by { |t| t['updated_at'] }.reverse
-	end
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @tasks }
@@ -110,4 +103,10 @@ class TasksController < ApplicationController
 	end
 	#print @priorities[1]
   end
+
+	def sidebar
+		@urgent = Task.all(:conditions => {'complete' => false}, :order => "priority DESC, created_at ASC", :limit => 5)
+		@latest = Task.all(:conditions => {'complete' => false}, :order => "created_at DESC", :limit => 5)
+	end
+  
 end
