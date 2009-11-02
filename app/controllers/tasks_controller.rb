@@ -10,7 +10,7 @@ class TasksController < ApplicationController
 
 	if @complete.nil?
 		@complete = false
-		@tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "priority DESC, created_at ASC" )
+		@tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "priority ASC, created_at ASC" )
 	else
 		@complete = true
 		@tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "updated_at DESC")

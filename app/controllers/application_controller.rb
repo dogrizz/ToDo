@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   private
 
     def sidebar
-      @urgent = Task.all(:conditions => {'complete' => false}, :order => "priority DESC, created_at ASC", :limit => 5)
+      @urgent = Task.all(:conditions => {'complete' => false}, :order => "priority ASC, created_at ASC", :limit => 5)
       @latest = Task.all(:conditions => {'complete' => false}, :order => "created_at DESC", :limit => 5)
     end
   
