@@ -2,5 +2,13 @@
   <b>Name:</b>
   <%=h @project.name %>
 </p>
+<p>
+  <b>Logo:</b>
+  <% unless @project.logo_file_name.blank? %>
+    <%= image_tag @project.logo.url %>
+  <% else %>
+    None
+  <% end %>
+</p>
 
 <%= link_to 'Back', projects_path %>

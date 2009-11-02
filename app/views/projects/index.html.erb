@@ -11,6 +11,12 @@
 <% @projects.each do |project| %>
   <tr>
     <td><%=h project.name %></td>
+    <td><% unless project.logo_file_name.blank? %>
+          <%= image_tag project.logo.url(:thumb) %>
+        <% else %>
+          None
+        <% end %>
+    </td>
     <td><%= link_to 'Show', project %></td>
     <td><%= link_to 'Destroy', project, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

@@ -3,12 +3,16 @@
 <br />
 <br />
 
-<% form_for(@project) do |f| %>
+<% form_for @project , :url => projects_path, :html => { :multipart => true } do |f| %>
   <%= f.error_messages %>
 
   <p>
     <%= f.label :name %><br />
     <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :icon %>
+    <%= f.file_field :logo %>
   </p>
   <p>
     <%= f.submit 'Create' %>

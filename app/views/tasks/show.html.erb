@@ -9,7 +9,11 @@
 </p>
 <p>
 	<b>Project:</b>
-	<%=h @task.project.name %>
+	<% unless @task.project.logo_file_name.blank? %>
+		<%= image_tag @task.project.logo.url %>
+	<% else %>
+		<%=h @task.project.name %>
+	<% end %>
 </p>
 <p>
 	<b>Created:</b>

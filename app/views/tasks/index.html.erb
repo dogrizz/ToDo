@@ -21,7 +21,13 @@
   <tr>
     <td><%=h task.short %></td>
 	<td><%=h ENV[task.priority.to_s] %></td>
-	<td><%=h task.project.name %></td>
+	<td>
+		<% unless task.project.logo_file_name.blank? %>
+			<%= image_tag task.project.logo.url(:thumb) %>
+		<% else %>
+			<%=h task.project.name %>
+		<% end %>
+	</td>
 	<td style="width:85px;"><%=h task.created_at.strftime("%H:%M %d-%m-%y") %></td>
 	<% if @complete %>
 		<td style="width:85px;"><%=h task.updated_at.strftime("%H:%M %d-%m-%y") %></td>

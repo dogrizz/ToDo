@@ -104,9 +104,4 @@ class TasksController < ApplicationController
 	#print @priorities[1]
   end
 
-	def sidebar
-		@urgent = Task.all(:conditions => {'complete' => false}, :order => "priority DESC, created_at ASC", :limit => 5)
-		@latest = Task.all(:conditions => {'complete' => false}, :order => "created_at DESC", :limit => 5)
-	end
-  
 end
