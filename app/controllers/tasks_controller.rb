@@ -6,43 +6,41 @@ class TasksController < ApplicationController
   # GET /tasks.xml
 
   def index
-	@complete = params[:complete]
-
-	if @complete.nil?
-		@complete = false
-		@tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "priority ASC, created_at ASC" )
-	else
-		@complete = true
-		@tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "updated_at DESC")
-	end
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @tasks }
+    @complete = params[:complete]
+    projects = []
+    unless params[:filter].blank?
+      projects = Project.all(:conditions => ["UPPER(name) like ?",params[:filter].upcase+'%']).inject([]) {|tab, val| tab << val.id }
     end
+
+    if @complete.nil?
+      @complete = false
+      if params[:filter].blank?
+        @tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "priority ASC, created_at ASC" )
+      else
+        @tasks = Task.all(:conditions => ["complete = ? AND project_id in (?)", @complete, projects],:order => "priority ASC, created_at ASC" )
+      end
+    else
+      @complete = true
+      if params[:filter].blank?
+        @tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "updated_at DESC")
+      else
+        @tasks = Task.all(:conditions => ["complete = ? AND project_id in (?)", @complete, projects],:order => "updated_at DESC")
+      end
+    end
+
   end
 
   # GET /tasks/1
   # GET /tasks/1.xml
   def show
     @task = Task.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @task }
-    end
   end
 
   # GET /tasks/new
   # GET /tasks/new.xml
   def new
     @task = Task.new
-	@projects = Project.all.inject([]) {|tab, val| tab << [val.name, val.id] }
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @task }
-    end
+    @projects = Project.all.inject([]) {|tab, val| tab << [val.name, val.id] }
   end
 
   # GET /tasks/1/edit
@@ -55,15 +53,11 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(params[:task])
 
-    respond_to do |format|
-      if @task.save
-        flash[:notice] = 'Task was successfully created.'
-        format.html { redirect_to(@task) }
-        format.xml  { render :xml => @task, :status => :created, :location => @task }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @task.errors, :status => :unprocessable_entity }
-      end
+    if @task.save
+      flash[:notice] = 'Task was successfully created.'
+      redirect_to(@task) 
+    else
+      render :action => "new"
     end
   end
 
@@ -72,15 +66,11 @@ class TasksController < ApplicationController
   def update
     @task = Task.find(params[:id])
 
-    respond_to do |format|
-      if @task.update_attributes(params[:task])
-        flash[:notice] = 'Task was successfully updated.'
-        format.html { redirect_to(@task) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @task.errors, :status => :unprocessable_entity }
-      end
+    if @task.update_attributes(params[:task])
+      flash[:notice] = 'Task was successfully updated.'
+      redirect_to(@task)
+    else
+      render :action => "edit"
     end
   end
 

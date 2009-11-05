@@ -8,7 +8,11 @@
 
   <p>
     <%= f.label :task %><br />
-    <%= f.text_area(:task, :size => "40x10") %>
+    <%=h f.text_area(:task, :size => "40x10") %>
+  </p>
+  <p>
+    <%= f.label :project %><br />
+    <%= f.select :project_id , options_for_select(@projects,1) %>
   </p>
   <p>
     <%= f.label :complete %><br />
@@ -23,6 +27,6 @@
   </p>
 <% end %>
 
-<%= link_to '<< Back', tasks_path %>
+<%= link_to '<< Back', tasks_path(:complete => @task.complete) %>
  | <%= link_to 'Show >>', @task %>
 
