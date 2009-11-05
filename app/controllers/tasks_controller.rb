@@ -46,6 +46,7 @@ class TasksController < ApplicationController
   # GET /tasks/1/edit
   def edit
     @task = Task.find(params[:id])
+    @projects = Project.all.inject([]) {|tab, val| tab << [val.name, val.id] }
   end
 
   # POST /tasks
