@@ -1,12 +1,13 @@
 class TasksController < ApplicationController
-	before_filter :priorytety, :only => [:new, :edit, :show ]
-	#before_filter :sidebar
+	before_filter :priorytety, :except => [:index, :destroy ]
 	before_filter :require_user
+  before_filter :projects, :except => [:index, :destroy ]
+
   # GET /tasks/
   # GET /tasks.xml
-
   def index
     @complete = params[:complete]
+
     projects = []
     unless params[:filter].blank?
       projects = Project.all(:conditions => ["UPPER(name) like ?",params[:filter].upcase+'%']).inject([]) {|tab, val| tab << val.id }
@@ -40,13 +41,11 @@ class TasksController < ApplicationController
   # GET /tasks/new.xml
   def new
     @task = Task.new
-    @projects = Project.all.inject([]) {|tab, val| tab << [val.name, val.id] }
   end
 
   # GET /tasks/1/edit
   def edit
     @task = Task.find(params[:id])
-    @projects = Project.all.inject([]) {|tab, val| tab << [val.name, val.id] }
   end
 
   # POST /tasks
@@ -80,20 +79,19 @@ class TasksController < ApplicationController
   def destroy
     @task = Task.find(params[:id])
     @task.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(tasks_url) }
-      format.xml  { head :ok }
-    end
+    redirect_to(tasks_url())
   end
 
   private
   def priorytety
-	@priorities = []
-	for i in 1..3 do
-		@priorities << [ENV[i.to_s], i]
-	end
-	#print @priorities[1]
+    @priorities = []
+    for i in 1..3 do
+      @priorities << [ENV[i.to_s], i]
+    end
   end
 
+  def projects
+    @projects = Project.all.inject([]) {|tab, val| tab << [val.name, val.id] }
+  end
+  
 end

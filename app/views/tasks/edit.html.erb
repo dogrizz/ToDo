@@ -4,7 +4,7 @@
 <br />
 
 <% form_for(@task) do |f| %>
-  <%= f.error_messages %>
+  <p><%= f.error_messages :header_tag => 'h3' %></p>
 
   <p>
     <%= f.label :task %><br />
@@ -12,7 +12,7 @@
   </p>
   <p>
     <%= f.label :project %><br />
-    <%= f.select :project_id , options_for_select(@projects,1) %>
+    <%= f.select :project_id , options_for_select(@projects) %>
   </p>
   <p>
     <%= f.label :complete %><br />
