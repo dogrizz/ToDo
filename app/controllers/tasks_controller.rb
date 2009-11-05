@@ -12,7 +12,7 @@ class TasksController < ApplicationController
       projects = Project.all(:conditions => ["UPPER(name) like ?",params[:filter].upcase+'%']).inject([]) {|tab, val| tab << val.id }
     end
 
-    if @complete.nil?
+    if @complete.blank? or @complete == 'false'
       @complete = false
       if params[:filter].blank?
         @tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "priority ASC, created_at ASC" )

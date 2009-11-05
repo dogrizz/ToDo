@@ -16,9 +16,9 @@
 			<th style="width:85px;">Done</th>
 		<% end %>
 		<th>
-			<% form_tag tasks_path(:complete => @complete), :method => 'get' do  %>
-				<%= text_field_tag :filter, params[:filter] ,{:size => 8} %>
+			<% form_tag tasks_path, :method => 'get' do  %>
 				<%= hidden_field_tag :complete, @complete %>
+				<%= text_field_tag :filter, params[:filter] ,{:size => 8} %>
 				<%= submit_tag 'Go', :name => nil %>
 			<% end %>
 		</th>
