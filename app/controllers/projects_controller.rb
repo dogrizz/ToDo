@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
   before_filter :require_user
   
   def index
-    @projects = Project.all
+    @projects = Project.paginate :page => params[:page]  
   end
 
   # GET /projects/1

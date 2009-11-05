@@ -3,11 +3,11 @@
 <br />
 <br />
 
+<%= will_paginate @projects %>
 <table>
   <tr>
     <th>Name</th>
   </tr>
-
 <% @projects.each do |project| %>
   <tr>
     <td><%=h project.name %></td>

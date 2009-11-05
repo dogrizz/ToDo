@@ -16,16 +16,16 @@ class TasksController < ApplicationController
     if @complete.blank? or @complete == 'false'
       @complete = false
       if params[:filter].blank?
-        @tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "priority ASC, created_at ASC" )
+        @tasks = Task.paginate(:page => params[:page], :conditions => ["complete = ?", @complete],:order => "priority ASC, created_at ASC" )
       else
-        @tasks = Task.all(:conditions => ["complete = ? AND project_id in (?)", @complete, projects],:order => "priority ASC, created_at ASC" )
+        @tasks = Task.paginate(:page => params[:page], :conditions => ["complete = ? AND project_id in (?)", @complete, projects],:order => "priority ASC, created_at ASC" )
       end
     else
       @complete = true
       if params[:filter].blank?
-        @tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "updated_at DESC")
+        @tasks = Task.paginate(:page => params[:page], :conditions => ["complete = ?", @complete],:order => "updated_at DESC")
       else
-        @tasks = Task.all(:conditions => ["complete = ? AND project_id in (?)", @complete, projects],:order => "updated_at DESC")
+        @tasks = Task.paginate(:page => params[:page], :conditions => ["complete = ? AND project_id in (?)", @complete, projects],:order => "updated_at DESC")
       end
     end
 
