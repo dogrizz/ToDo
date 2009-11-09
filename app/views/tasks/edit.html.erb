@@ -12,7 +12,7 @@
   </p>
   <p>
     <%= f.label :project %><br />
-    <%= f.select :project_id , options_for_select(@projects) %>
+    <%= f.select :project_id , options_for_select(@projects,@task.project_id) %>
   </p>
   <p>
     <%= f.label :complete %><br />
