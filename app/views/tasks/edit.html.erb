@@ -5,7 +5,10 @@
 
 <% form_for(@task) do |f| %>
   <%= f.error_messages %>
-
+<p>
+  <%= f.label 'Tag List (Delimiter = ,)' %><br />
+  <%= f.text_field :tag_list %>
+</p>
   <p>
     <%= f.label :task %><br />
     <%= f.text_area(:task, :size => "40x10") %>

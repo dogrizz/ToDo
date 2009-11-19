@@ -2,7 +2,9 @@
   <b>Short:</b>
   <%=h @task.short %>
 </p>
-
+<% for tag in @task.tags %> 
+<%= link_to tag.name, tasks_path(:view =>'tag', :tag => tag.name) %><% end %>
+</p>
 <p>
   <b>Task:</b>
   <%=h @task.task %>
