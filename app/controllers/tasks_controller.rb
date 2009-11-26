@@ -3,17 +3,20 @@ class TasksController < ApplicationController
 	before_filter :sidebar
   # GET /tasks/
   # GET /tasks.xml
-
+  #require 'act_as_taggable'
   def index
-	@complete = params[:complete]
+    @complete = params[:complete]
+    @tag = params[:tag]
 
-	if @complete.nil?
-		@complete = false
-		@tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "priority DESC, created_at ASC" )
-	else
-		@complete = true
-		@tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "updated_at DESC")
-	end
+    if not @tag.blank?
+      @tasks = Task.find_tagged_with(@tag)
+    elsif @complete.nil?
+      @complete = false
+      @tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "priority DESC, created_at ASC" )
+    else
+      @complete = true
+      @tasks = Task.all(:conditions => ["complete = ?", @complete],:order => "updated_at DESC")
+    end
 
     respond_to do |format|
       format.html # index.html.erb

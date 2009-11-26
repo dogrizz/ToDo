@@ -1,4 +1,6 @@
-<% if @complete %>
+<% if not @tag.blank? %>
+	<h2>Listing by tag: <%=h @tag %></h2>
+<% elsif @complete %>
 	<h2>Listing finished tasks</h2>
 <% else %>
 	<h2>Listing active tasks</h2>
