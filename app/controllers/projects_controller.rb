@@ -55,8 +55,9 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1.xml
   def destroy
     @project = Project.find(params[:id])
+    tasks = Task.all(:conditions => ["project_id = ?",@project.id])
     @project.destroy
-
+    tasks.each{ |t| t.destroy}
     redirect_to(projects_url)
   end
 end
